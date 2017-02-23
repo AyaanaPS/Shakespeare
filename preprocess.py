@@ -25,7 +25,8 @@ for l in range(len(lines)):
 words = np.array([ line.split(' ') for line in lines ])
 maxwords = max([ len(line) for line in words ])
 
-X = [ [0 for _ in range(maxwords)] for __ in range(len(words)) ]
+#X = [ [0 for _ in range(maxwords)] for __ in range(len(words)) ]
+X = []
 rhymepairs = []
 dic = {'END': 0}	## really 'START' since it's going backwards
 index = 1
@@ -33,6 +34,7 @@ index = 1
 for l in range(len(words)):
 
 	line = words[l]
+	xline = []
 	
 	for w in range(len(line)):
 
@@ -44,7 +46,11 @@ for l in range(len(words)):
 			dic[word] = index
 			index += 1
 
-		X[l][w] = dic[word]
+		#X[l][w] = dic[word]
+		xline.append( dic[word] )
+
+	xline.append( 0 )
+	X.append(xline)
 
 	## store rhyming pairs:
 	if (l+1) % 14 == 0:
