@@ -53,7 +53,7 @@ for line in lines:
 		if tag not in wordType:
 			wordType[tag] = [pair[0]]
 		else:
-			wordType[tag].append(pair[0])
+			wordType[tag].append(pair[0].lower())
 
 		lineSeq.append(type_map[tag])
 
@@ -65,7 +65,7 @@ HMM = unsupervised_HMM(types, 4, 10)
 tag_map = { type_map[key]: key for key in type_map.keys() }
 
 poem = []
-for i in range(10):
+for i in range(14):
 	emission = HMM.generate_emission(8)
 	line = ''
 	for val in emission:
@@ -73,7 +73,10 @@ for i in range(10):
 		wordOptions = wordType[tag]
 		word = random.choice(wordOptions)
 		line += word + ' '
-	poem.append(line)
+	if(i != 13):
+		line = line.strip(' ')
+		line += ','
+	poem.append(line.capitalize())
 
 for line in poem:
 	print line
