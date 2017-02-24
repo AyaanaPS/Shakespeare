@@ -287,8 +287,8 @@ class HiddenMarkovModel:
         rhymeword1 = rhymewords[0]
         rhymeword2 = rhymewords[1]
         
-        rhyme_ind1 = self.map[ rhymeword1 ]
-        rhyme_ind2 = self.map[ rhymeword2 ]
+        rhyme_ind1 = self.map[ rhymeword1.lower() ]
+        rhyme_ind2 = self.map[ rhymeword2.lower() ]
 
         emission1 += [ rhyme_ind1 ]
         emission2 += [ rhyme_ind2 ]
