@@ -84,6 +84,11 @@ poem[12] = rhymes[12]
 poem[13] = rhymes[13]
 
 print ''
+i = 0
 for line in poem:
-	print line
+	if(i!=13):
+		print line.capitalize() + ','
+	else:
+		print line.capitalize()
+	i+=1
 print ''
