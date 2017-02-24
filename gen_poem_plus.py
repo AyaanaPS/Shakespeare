@@ -39,7 +39,6 @@ poem = ['' for _ in range(14)]
 for nRhymes in range(7):
 	while True:
 		nSyl1, nSyl2 = 0,0
-		print nRhymes
 		rhymeline1, rhymeline2 = HMM.generate_emission(M)
         ## some lines cut short by 'END'/'START'
 		if 0 in rhymeline1: rhymeline1 = rhymeline1[:rhymeline1.index(0)]
