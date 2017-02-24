@@ -6,7 +6,9 @@
 # Description:  Set 5 solutions
 ########################################
 
+import numpy as np
 import random
+import pickle
 
 class HiddenMarkovModel:
     '''
@@ -53,6 +55,8 @@ class HiddenMarkovModel:
         self.O = O
         self.A_start = [1. / self.L for _ in range(self.L)]
 
+        self.rhymepairs = pickle.load(open('rhymepairs.pkl','rb'))
+        self.map = pickle.load(open('word_map.pkl','rb'))
 
     def forward(self, x, normalize=False):
         '''
@@ -228,7 +232,7 @@ class HiddenMarkovModel:
                         O_den[curr] += P_curr[curr]
                         O_num[curr][x[t - 1]] += P_curr[curr]
 
-                # E: Update the expectedP(y^j = a, y^j+1 = b, x) for given (x, y)
+                # E: Update the expected P(y^j = a, y^j+1 = b, x) for given (x, y)
                 for t in range(1, M):
                     P_curr_nxt = [[0. for _ in range(self.L)] for _ in range(self.L)]
 
@@ -285,6 +289,7 @@ class HiddenMarkovModel:
                 next_obs += 1
 
             next_obs -= 1
+
             emission.append(next_obs)
 
             # Sample next state.
@@ -296,9 +301,43 @@ class HiddenMarkovModel:
                 next_state += 1
 
             next_state -= 1
+
             state = next_state
 
         return emission
+
+    def generate_rhymingLines(self, M):
+        '''
+        Generates an emission of length M, assuming that the starting word
+        is chosen randomly from a list of rhyming pairs. 
+
+        Arguments:
+            M:          Length of the emission to generate.
+
+        Returns:
+            emission:   The randomly generated emission as a list of integers.
+        '''
+
+        emission1 = []
+        emission2 = []
+
+        rhymewords = self.rhymepairs[np.random.choice(len(self.rhymepairs))]
+        rhymeword1 = rhymewords[0]
+        rhymeword2 = rhymewords[1]
+
+        # The last value in each emission should be accessed using word_map
+        # rather than looking for a word using the tag matrix.
+        rhyme_ind1 = self.map[rhymeword1.lower()]
+        rhyme_ind2 = self.map[rhymeword2.lower()]
+
+        emission1 += [rhyme_ind1]
+        emission2 += [rhyme_ind2]
+
+        emission1 += self.generate_emission(M-1)
+        emission2 += self.generate_emission(M-1)
+
+        return emission1, emission2
+        
 
 def unsupervised_HMM(X, n_states, n_iters):
     '''
@@ -344,4 +383,3 @@ def unsupervised_HMM(X, n_states, n_iters):
     HMM.unsupervised_learning(X, n_iters)
 
     return HMM
-
