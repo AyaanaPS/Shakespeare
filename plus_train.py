@@ -8,8 +8,8 @@ X = pickle.load(open('data%d.pkl' % data_ver,'rb'))
 
 from HMM import unsupervised_HMM
 
-n_states = 20
-n_iters = 1000
+n_states = 50
+n_iters = 2000
 
 for n_states in [4]:
 

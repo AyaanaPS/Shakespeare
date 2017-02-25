@@ -3,7 +3,7 @@ import nltk
 from nltk import word_tokenize
 
 datapath = './'
-filename = 'data/spensershakespeare'
+filename = 'data/spenseyshakes'
 
 lines = np.array( open(filename).read().splitlines() )
 
@@ -14,7 +14,7 @@ lines = lines[ notblank ]
 
 print len(lines)
 
-notnumber = np.where( [ line[:5] != '     ' for line in lines ] )[0]
+notnumber = np.where( [ len(line) > 10 for line in lines ] )[0]
 lines = lines[ notnumber ]
 
 print len(lines)
@@ -26,7 +26,6 @@ for l in range(len(lines)):
 	lines[l] = lines[l].replace(':','')
 	lines[l] = lines[l].replace('?','')
 	lines[l] = lines[l].replace('!','')
-	lines[l] = lines[l].replace('\\','')
 	lines[l] = lines[l].replace('  ','')
 	lines[l] = lines[l].replace('(','')
 	lines[l] = lines[l].replace(')','')
